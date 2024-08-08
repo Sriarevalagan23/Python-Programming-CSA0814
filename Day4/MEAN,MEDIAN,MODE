@@ -1,0 +1,8 @@
+import statistics 
+numbers = [12, 15, 12, 15, 16, 18, 18, 18, 19, 20] 
+mean = statistics.mean(numbers) 
+median = statistics.median(numbers) 
+mode = statistics.mode(numbers) 
+print("Mean:", mean) 
+print("Median:", median) 
+print("Mode:", mode) 
