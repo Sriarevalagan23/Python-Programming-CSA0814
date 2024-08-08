@@ -1,0 +1,3 @@
+arr=[12,45,2,99,10] 
+print(“Minimum= “ , min(arr)) 
+print(“Maximum= “ ,max(arr)) 
