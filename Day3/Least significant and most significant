@@ -1,0 +1,9 @@
+def find_significant_digits(n): 
+n_str=str(n).replace(‘.’ , ‘ ‘).replace(‘-’ , ‘ ‘) 
+most_significant=int(n_str[0]) 
+least_significant=int(n_str[-1]) 
+return most_significant,least_significant 
+n=1.2378 
+most_significant,least_significant=  find_significant_digits(n) 
+print(“most significant: “ , most_significant) 
+print(“least significant: “ , least significant) 
