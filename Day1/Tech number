@@ -1,0 +1,8 @@
+num=3025 
+first_half=int(num/100) 
+Print(first_half) 
+Product=(first_half_second_half)**2 
+if(product==num): 
+ print(“the number is tech: “+str(num)) 
+else: 
+ print(“the number is not tech: “+str(num)) 
