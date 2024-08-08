@@ -1,0 +1,4 @@
+def simple_interest(p, r=5, t=1): 
+si=(p*r*t)/100 
+p=1000 
+print(“The simple interest is: “ , simple_interest(p, r=5, t=1)) 
