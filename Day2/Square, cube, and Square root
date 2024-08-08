@@ -1,0 +1,10 @@
+import math 
+n=6 
+square=n**2 
+cube=n**3 
+square_root=math.sqrt(n) 
+print(“Square is: “, square) 
+print(“Cube is: “, cube) 
+print(“Square root is: “, square_root) 
+
+ 
