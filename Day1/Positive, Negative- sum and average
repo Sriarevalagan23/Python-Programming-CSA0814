@@ -1,0 +1,11 @@
+sum=0 
+while True: 
+a=4 
+if a==-1: 
+ break 
+sum=sum+a 
+avg=sum/2 
+Print(sum) 
+Print(avg) 
+
+ 
