@@ -1,0 +1,5 @@
+def length_of_last_word(sentence): 
+words=sentence.script( ).split( ) 
+return len(words[-1]) if words else 0 
+sentence=”How are you” 
+print(f”length of last word is: {length_of _last_word(sentence)}”) 
