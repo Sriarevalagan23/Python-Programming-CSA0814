@@ -1,0 +1,9 @@
+row=4 
+K=2*rows-2 
+for i in range(rows): 
+ for j in range(k): 
+ Print(end= ”  “ ) 
+K=k-2 
+for j in range (i+1): 
+  print(“*”,end=” “) 
+print() 
