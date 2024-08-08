@@ -1,0 +1,8 @@
+def sum_of_digits_until_single_digit(number):
+    while number >= 10:
+        number = sum(int(digit) for digit in str(number))
+    return number
+number = 2024
+result = sum_of_digits_until_single_digit(number)
+print(f"The sum of digits until it becomes a single digit is {result}.")
+
