@@ -1,0 +1,5 @@
+from collections import Counter
+elements = ['apple', 'banana', 'apple', 'orange', 'banana', 'apple']
+frequency = Counter(elements)
+for key, value in frequency.items():
+    print(f"{key}: {value}")
