@@ -1,0 +1,13 @@
+def parse_input(input_str):
+    return list(map(int, input_str.split(',')))
+def intersection(arr1, arr2):
+    set1 = set(arr1)
+    set2 = set(arr2)
+    intersect = set1.intersection(set2)
+    return list(intersect)
+input_str1 = input("Enter the first list of numbers, separated by commas: ")
+input_str2 = input("Enter the second list of numbers, separated by commas: ")
+list1 = parse_input(input_str1)
+list2 = parse_input(input_str2)
+result = intersection(list1, list2)
+print("Intersection:", result)
