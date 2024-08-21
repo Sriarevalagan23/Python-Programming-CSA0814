@@ -1,0 +1,15 @@
+def find_repeated_indices(s):
+    sorted_s = ''.join(sorted(s))
+    char_indices = {}
+    repeated_indices = {}
+    for i, char in enumerate(s):
+        if char in char_indices:
+            if char not in repeated_indices:
+                repeated_indices[char] = []
+            repeated_indices[char].append(i)
+        else:
+            char_indices[char] = i
+    for char, indices in repeated_indices.items():
+        print(f"Character '{char}' is repeated at indices: {indices}")
+input_string = "programming"
+find_repeated_indices(input_string)
