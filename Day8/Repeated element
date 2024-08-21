@@ -1,0 +1,11 @@
+def find_repeated_element(arr):
+    seen = set()
+    for num in arr:
+        if num in seen:
+            return num
+        seen.add(num)
+    return None  
+
+array = [1, 2, 3, 4, 5, 3]
+repeated_element = find_repeated_element(array)
+print("Repeated element:", repeated_element)
