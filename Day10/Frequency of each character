@@ -1,0 +1,8 @@
+def replace_chars(s):
+    from collections import Counter
+    freq = Counter(s)
+    return ''.join(chr((ord(c) - 97 + freq[c]) % 26 + 97) for c in s)
+
+input_string = "ghee"
+output_string = replace_chars(input_string)
+print(output_string)
