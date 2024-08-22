@@ -1,0 +1,14 @@
+def is_palindrome(n):
+    return str(n) == str(n)[::-1]
+def largest_palindrome_product(digit_count):
+    lower, upper = 10**(digit_count - 1), 10**digit_count
+    max_palindrome = 0   
+     for i in range(upper - 1, lower - 1, -1):
+        for j in range(i, lower - 1, -1):
+            product = i * j
+            if is_palindrome(product):
+                max_palindrome = max(max_palindrome, product)
+    return max_palindrome
+
+print(f"Largest palindrome from the product of two 2-digit numbers: {largest_palindrome_product(2)}")
+print(f"Largest palindrome from the product of two 4-digit numbers: {largest_palindrome_product(4)}")
