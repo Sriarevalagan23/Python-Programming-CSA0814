@@ -1,0 +1,9 @@
+import itertools
+dict_letters = {
+    '1': ('a', 'b'),
+    '2': ('c', 'd')
+}
+letter_tuples = list(dict_letters.values())
+combinations = list(itertools.product(*letter_tuples))
+for combo in combinations:
+    print(combo)
