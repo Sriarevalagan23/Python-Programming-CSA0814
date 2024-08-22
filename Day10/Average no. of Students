@@ -1,0 +1,15 @@
+def average_students_basic(E, L, T):
+    total_students = 0
+    current_students = 0
+    for i in range(T):
+        current_students += E[i] - L[i]
+        total_students += current_students
+    average = total_students / T
+    return average
+
+E = [10, 20, 30, 40, 50]
+L = [5, 10, 20, 30, 10]
+T = 5
+
+average_students = average_students_basic(E, L, T)
+print("Average:",average_students)
