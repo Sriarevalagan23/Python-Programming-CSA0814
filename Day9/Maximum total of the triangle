@@ -1,0 +1,13 @@
+def max_total_from_top(triangle):
+    for row in range(len(triangle) - 2, -1, -1):
+        for col in range(len(triangle[row])):
+            triangle[row][col] += max(triangle[row + 1][col], triangle[row + 1][col + 1])
+    return triangle[0][0]
+triangle = [
+    [3],
+    [7, 4],
+    [2, 4, 6],
+    [8, 5, 9, 3]
+]
+max_total = max_total_from_top(triangle)
+print(f"The maximum total from top to bottom is {max_total}")
