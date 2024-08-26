@@ -1,0 +1,105 @@
+import os
+import requests
+from time import sleep
+from tqdm import tqdm
+from requests.exceptions import ConnectionError, HTTPError, Timeout
+import time
+import argparse
+
+class RemoteFileDownloader:
+    def __init__(self, url, destination, protocol='http', username=None, password=None, throttle_rate=None, max_retries=5):
+        self.url = url
+        self.destination = destination
+        self.protocol = protocol
+        self.username = username
+        self.password = password
+        self.throttle_rate = throttle_rate  # in KB/s
+        self.max_retries = max_retries
+
+    def download(self):
+        if self.protocol.lower() == 'http':
+            self._download_http()
+        else:
+            raise ValueError("Unsupported protocol. Use 'http'.")
+
+    def _download_http(self):
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'
+        }
+        if os.path.exists(self.destination):
+            resume_header = {'Range': f'bytes={os.path.getsize(self.destination)}-'}
+            headers.update(resume_header)
+
+        auth = (self.username, self.password) if self.username and self.password else None
+
+        for attempt in range(self.max_retries):
+            try:
+                print(f"Attempt {attempt + 1}: Connecting to {self.url}")
+                with requests.get(self.url, headers=headers, auth=auth, stream=True, timeout=10, allow_redirects=True) as response:
+                    response.raise_for_status()  # Raises HTTPError for bad responses
+                    
+                    # Handle missing Content-Length header
+                    content_length = response.headers.get('content-length')
+                    if content_length:
+                        total_size = int(content_length)
+                        print(f"Content-Length from headers: {total_size} bytes")
+                    else:
+                        total_size = None  # Unknown size
+                        print("Content-Length header is missing")
+
+                    existing_size = os.path.getsize(self.destination) if os.path.exists(self.destination) else 0
+
+                    if total_size is not None:
+                        total_size += existing_size  # Resume download
+
+                    mode = 'ab' if existing_size > 0 else 'wb'
+                    with open(self.destination, mode) as f:
+                        bar = tqdm(
+                            desc=self.destination,
+                            total=total_size,
+                            unit='B',
+                            unit_scale=True,
+                            unit_divisor=1024,
+                            initial=existing_size,
+                            disable=total_size is None  # Disable progress bar if size is unknown
+                        )
+                        for chunk in response.iter_content(chunk_size=8192):
+                            if chunk:
+                                f.write(chunk)
+                                if total_size is not None:
+                                    bar.update(len(chunk))
+                                if self.throttle_rate:
+                                    sleep(len(chunk) / (self.throttle_rate * 1024))
+                    print(f"Download completed successfully: {self.destination}")
+                # Exit if download is successful
+                break
+
+            except (ConnectionError, HTTPError, Timeout) as e:
+                print(f"Attempt {attempt + 1} of {self.max_retries} failed: {e}")
+                if attempt + 1 == self.max_retries:
+                    print("Max retries reached. Download failed.")
+                else:
+                    # Wait before retrying
+                    wait_time = 2 ** attempt
+                    print(f"Retrying in {wait_time} seconds...")
+                    time.sleep(wait_time)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Download files using HTTP.')
+    parser.add_argument('-u', '--username', help='Username for authentication, if required.')
+    parser.add_argument('-p', '--password', help='Password for authentication, if required.')
+    parser.add_argument('-r', '--resume', action='store_true', help='Resume downloading a partially downloaded file.')
+    parser.add_argument('-t', '--throttle', type=int, help='Throttle download speed to specified KB/s.')
+    parser.add_argument('-o', '--output', default='downloaded_file', help='Output file path.')
+
+    args = parser.parse_args()
+
+    downloader = RemoteFileDownloader(
+        url="https://drive.google.com/uc?export=download&id=1crQEr7kJUTmy9qUMACz9dGgi8AtDFGw_",  # Hardcoded URL
+        destination=args.output,
+        username=args.username,
+        password=args.password,
+        throttle_rate=args.throttle
+    )
+
+    downloader.download()
